@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="script.js">
+    <title>Dois Talentos - Escola Técnica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logoRD">
+            <div class="logo">
+                <a href="index.html"><img class="logo1" src="img/download.jfif" alt=""></a><h1>Dois Talentos</h1></div>
+                <i class="fa-solid fa-bars" id="openmenu" onclick="openmenu()"></i>
+                
+                
+                
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="#">Início</a></li>
+                    <li><a href="serviços.html">Serviços</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                    <li><a href="biblioteca.html">Biblioteca</a></li>
+                    <li><a href="portofolio.html">Eventos</a></li>
+                    <a href="login-portal.html" class="btn-entrar">Portal</a>
+                    <div>
+                     <i class="fa-solid fa-circle-xmark" id="close"  onclick="closemenu()" ></i>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+   
+    <div class="carousel">
+        <div class="carousel-images">
+            <div class="carousel-item active">
+                <img src="img/Mão segurando o conceito de saúde do estetoscópio _ Foto Grátis.jpg" alt="Imagem 1">
+                <div class="carousel-caption">
+                    <h3> A Importância da Saúde</h3>
+                    <p> Entender a importância da saúde é fundamental para garantir uma vida longa e saudável. Cuide-se!</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://cdn.pixabay.com/photo/2016/09/30/06/53/kit-1704526_640.png" alt="Imagem 2">
+                <div class="carousel-caption">
+                    <h3> Alimentação Saudável</h3>
+                    <p> Uma alimentação balanceada é a chave para uma boa saúde e bem-estar. Escolha os alimentos certos!</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://cdn.pixabay.com/photo/2016/07/28/19/42/hand-1549133_640.jpg" alt="Imagem 3">
+                <div class="carousel-caption">
+                    <h3> Exercícios Físicos</h3>
+                    <p> A prática regular de exercícios físicos ajuda a manter o corpo e a mente saudáveis.</p>
+                </div>
+            </div>
+        </div>
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    
+   
+
+
+    
+    
+    <section id="novidades" class="section-novidades">
+        <h2>Notícias & Novidades</h2>
+        <p></p> 
+        <div class="novidade-container"></div>
+        
+       <a href="contato.html"><div id="novidadeList"></div></a>
+        </div>
+       <script>
+        
+    document.addEventListener("DOMContentLoaded", () => {
+        const novidadeList = document.getElementById("novidadeList");
+
+        // Função para carregar e exibir novidades
+        function carregarNovidades() {
+            const novidades = JSON.parse(localStorage.getItem("novidades")) || [];
+            novidadeList.innerHTML = "";
+
+            novidades.forEach((novidade, index) => {
+                const novidadeItem = document.createElement("div");
+                novidadeItem.classList.add("novidade-item");
+
+                novidadeItem.innerHTML = `
+    <div class="novidade-background" style="background-image: url('${novidade.imagem}');">
+        <h3>${novidade.titulo}</h3>
+        <p>${novidade.descricao}</p>
+    </div>
+    
+`;
+
+
+                novidadeList.appendChild(novidadeItem);
+            });
+        }
+
+        // Função para remover uma novidade
+        window.removerNovidade = function(index) {
+            let novidades = JSON.parse(localStorage.getItem("novidades")) || [];
+            novidades.splice(index, 1);
+            localStorage.setItem("novidades", JSON.stringify(novidades));
+            carregarNovidades();
+        };
+
+        carregarNovidades();
+    });
+        </script>
+    </section>
+
+    
+    
+
+
+    <section class="ser-item">
+        <div class="novidade-container">
+            <article class="ser-item">
+                
+                <h3><strong> Qual é a nossa missão?</strong></h3>
+                <p><strong>Missão:</strong> Nossa missão é formar</P>
+
+                    <p><strong>Visão:</strong> Aspiramos a ser uma escola de referência em Angola, reconhecida pela excelência no ensino técnico e pela nossa contribuição à melhoria da saúde no país.</p>
+                    
+                    <P><strong>Valores:</strong> Valorizamos a ética, a qualidade no ensino, a inovação, o compromisso social e o respeito ao próximo. Nosso foco está sempre em garantir que nossos alunos estejam prontos para atuar de forma responsável e eficiente.
+                    
+                    </p>
+                
+            </article>
+            <article class="ser-item">
+               
+                <h3>Quem somos?</h3>
+                <p > A Escola Técnica Dois Talentose, localizada no Huambo, Angola, é uma instituição de ensino especializada na formação de profissionais de saúde. Oferecemos cursos de Enfermagem Geral e Análises Clínicas, com o compromisso de formar profissionais altamente qualificados, preparados para contribuir com o bem-estar e a saúde da comunidade. Nossa missão é promover a excelência educacional, combinando teoria e prática para capacitar nossos alunos com as competências necessárias para o mercado de trabalho.
+
+                </p>
+                
+            </article>
+        </div>
+    </section>
+    
+    <section class="contact-section">
+        <h2>Você pode nos contatar de diversas formas:</h2>
+        
+        <div class="contact-info">
+            <p><strong>Endereço:</strong> Estamos localizados na cidade de Huambo, Angola no bairro São João Popular perto da padaria Panidoce.</p>
+            <p><strong>Telefone:</strong> +244 935 659 439</p>
+            <p><strong>E-mail:</strong> <a href="mailto:doistalentos2@gmail.com">doistalentos2@gmail.com</a></p>
+            <p><strong>Formulário de contato:</strong> No nosso site, você pode preencher um formulário para tirar dúvidas ou solicitar informações, e nossa equipe responderá rapidamente.</p>
+          </div>
+      </section>
+
+    <footer>
+        <p>&copy; 2024 Dois Talentos - Escola Técnica. Todos os direitos reservados.Herme Marketing</p>
+    </footer>
+        <script src="script.js">
+        </script>
+  
+</body>
+</html>

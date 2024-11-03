@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bl.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <title>Admin I.T.P.S</title>
+    
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logoRD">
+            <div class="logo">
+                <a href="index.html"><img class="logo1" src="img/download.jfif" alt=""></a><h1>Dois Talentos</h1></div>
+                <i class="fa-solid fa-bars" id="openmenu" onclick="openmenu()"></i>
+                
+                
+                
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="admin.html">Início</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portofolio.html">Eventos</a></li>
+                    <li><a href="biblioteca.php">Biblioteca</a></li>
+                    <li><a href="https://herme07.github.io/hermemarketing.ao/contato.html">Ajuda</a></li>
+                    
+                    <div>
+                     <i class="fa-solid fa-circle-xmark" id="close"  onclick="closemenu()" ></i>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+
+    <hr>
+    <h2>Publicar Novo livrodt</h2>
+    <h1>Upload de Livros</h1>
+    <form action="livros.php" method="post" enctype="multipart/form-data">
+        <label for="titulo">Título do Livro:</label>
+        <input type="text" name="titulo" id="titulo" required><br><br>
+
+        <label for="autor">Autor:</label>
+        <input type="text" name="autor" id="autor" required><br><br>
+
+        <label for="descricao">Descrição:</label>
+        <textarea name="descricao" id="descricao" required></textarea><br><br>
+
+        <label for="livro">Escolha o arquivo do livro:</label>
+        <input type="file" name="livro" id="livro" accept=".pdf" required><br><br>
+
+        <button type="submit">Publicar Livro</button>
+    </form>
+    <section id="bookdtList">
+        <h2>livros Disponíveis</h2>
+        <div id="bookdts"></div>
+        
+    </section>
+  
+    <hr>
+    <a href="index.html" class="acessar">visualizar</a>
+
+
+    <script>
+        let ul = document.querySelector(`ul`)
+function openmenu(){
+   ul.classList.add(`open`)
+}
+function closemenu(){
+   ul.classList.remove(`open`)
+}
+  
+      document.getElementById("bookdtForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Captura os dados do formulário
+    const titulo = document.getElementById("titulo").value;
+    const autor = document.getElementById("autor").value;
+    const ano = document.getElementById("ano").value;
+    const descricao = document.getElementById("descricao").value;
+    const link = document.getElementById("link").value;
+
+    // Cria um objeto de livrodt
+    const novolivrodt = { titulo, autor,ano, descricao, link };
+
+    // Carrega a lista de livrodts do localStorage ou inicia uma nova lista
+    let livrodts = JSON.parse(localStorage.getItem("livrodts")) || [];
+
+    // Adiciona o novo livrodt à lista e salva no localStorage
+    livrodts.push(novolivrodt);
+    localStorage.setItem("livrodts", JSON.stringify(livrodts));
+
+    // Limpa o formulário e exibe uma mensagem de sucesso
+    document.getElementById("bookdtForm").reset();
+    alert("livrodt publicado com sucesso!");
+});
+document.addEventListener("DOMContentLoaded", function () {
+    renderbookdts();
+
+    // Função para renderizar os livrodts com botões de remoção
+    function renderbookdts() {
+        // Limpa a lista para evitar duplicações ao renderizar
+        const bookdtsContainer = document.getElementById("bookdts");
+        bookdtsContainer.innerHTML = "";
+
+        // Carrega os livrodts do localStorage
+        const livrodts = JSON.parse(localStorage.getItem("livrodts")) || [];
+
+        if (livrodts.length === 0) {
+            bookdtsContainer.innerHTML = "<p>Nenhum livrodt publicado.</p>";
+        } else {
+            // Cria o HTML para cada livrodt com um botão de remoção
+            livrodts.forEach((livrodt, index) => {
+                const bookdtDiv = document.createElement("div");
+                bookdtDiv.classList.add("livrodt");
+
+                bookdtDiv.innerHTML = `
+                <div class="livro-item">
+                    <h3>${livrodt.titulo}</h3>
+                    <p><strong>Autor:</strong> ${livrodt.autor}</p>
+                    <p><strong>Descrição:</strong> ${livrodt.descricao}</p>
+                    <p>...</p>
+                    ${livrodt.link ? `<p><a href="${livrodt.link}" class="acessar" target="_blank">Acessar livrodt</a></p>` : ""}
+                    <button class="remove-btn" onclick="removebookdt(${index})">Remover</button>
+                    <hr>
+                    </div>
+                `;
+
+                bookdtsContainer.appendChild(bookdtDiv);
+            });
+        }
+    }
+
+    // Função para remover um livrodt pelo índice
+    window.removebookdt = function (index) {
+        let livrodts = JSON.parse(localStorage.getItem("livrodts")) || [];
+
+        // Remove o livrodt do array e atualiza o localStorage
+        livrodts.splice(index, 1);
+        localStorage.setItem("livrodts", JSON.stringify(livrodts));
+
+        // Renderiza novamente os livrodts atualizados
+        renderbookdts();
+        alert("livrodt removido com sucesso!");
+    };
+});
+
+    </script>
+
+</body>
+</html>

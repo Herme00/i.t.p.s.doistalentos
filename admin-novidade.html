@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Admin I.T.P.S</title>
+    
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logoRD">
+            <div class="logo">
+                <a href="index.html"><img class="logo1" src="img/download.jfif" alt=""></a><h1>Dois Talentos</h1></div>
+                <i class="fa-solid fa-bars" id="openmenu" onclick="openmenu()"></i>
+                
+                
+                
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="admin.html">Início</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portofolio.html">Eventos</a></li>
+                    <li><a href="biblioteca.php">Biblioteca</a></li>
+                    <li><a href="https://herme07.github.io/hermemarketing.ao/contato.html">Ajuda</a></li>
+                    <a href="login-portal.html" class="btn-entrar">Portal</a>
+                    <div>
+                     <i class="fa-solid fa-circle-xmark" id="close"  onclick="closemenu()" ></i>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+<h2>Adicionar Novidade</h2>
+<form id="novidadeForm">
+    <input type="text" id="titulo" placeholder="Título da novidade" required><br><br>
+    <textarea id="descricao" placeholder="Descrição da novidade" required></textarea><br><br>
+    <input type="file" id="imagem" accept="image/*" required><br><br>
+    <button type="submit">Postar Novidade</button>
+</form>
+<h1>publicações</h1>
+<div id="novidadeList"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const novidadeForm = document.getElementById("novidadeForm");
+
+    // Função para converter imagem em base64
+    function getBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            callback(reader.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    novidadeForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const titulo = document.getElementById("titulo").value;
+        const descricao = document.getElementById("descricao").value;
+        const imagemInput = document.getElementById("imagem");
+        
+        // Função para salvar a novidade
+        function salvarNovidade(imagemBase64) {
+            const novaNovidade = { titulo, descricao, imagem: imagemBase64 || '' };
+            let novidades = JSON.parse(localStorage.getItem("novidades")) || [];
+            novidades.push(novaNovidade);
+            localStorage.setItem("novidades", JSON.stringify(novidades));
+
+            alert("Novidade postada com sucesso!");
+            novidadeForm.reset();
+        }
+
+        // Converte a imagem para base64 se estiver presente
+        if (imagemInput.files.length > 0) {
+            getBase64(imagemInput.files[0], salvarNovidade);
+        } else {
+            salvarNovidade();
+        }
+    });
+});
+// novidade
+document.addEventListener("DOMContentLoaded", () => {
+    const novidadeList = document.getElementById("novidadeList");
+
+    // Função para carregar e exibir novidades
+    function carregarNovidades() {
+        const novidades = JSON.parse(localStorage.getItem("novidades")) || [];
+        novidadeList.innerHTML = "";
+
+        novidades.forEach((novidade, index) => {
+            const novidadeItem = document.createElement("div");
+            novidadeItem.classList.add("novidade-item");
+
+            novidadeItem.innerHTML = `
+                 <div class="novidade-background" style="background-image: url('${novidade.imagem}');">
+        <h3>${novidade.titulo}</h3>
+        <p>${novidade.descricao}</p>
+    </div>
+    `;
+
+            novidadeList.appendChild(novidadeItem);
+        });
+    }
+
+    // Função para remover uma novidade
+    window.removerNovidade = function(index) {
+        let novidades = JSON.parse(localStorage.getItem("novidades")) || [];
+        novidades.splice(index, 1);
+        localStorage.setItem("novidades", JSON.stringify(novidades));
+        carregarNovidades();
+    };
+
+    carregarNovidades();
+});
+</script>
+</body>
+</html>

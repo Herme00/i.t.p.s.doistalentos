@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="styles.css">
+    <title>Publicar Evento</title>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logoRD">
+            <div class="logo">
+                <a href="index.html"><img class="logo1" src="img/download.jfif" alt=""></a><h1>Dois Talentos</h1></div>
+                <i class="fa-solid fa-bars" id="openmenu" onclick="openmenu()"></i>
+                
+                
+                
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="admin.html">Início</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portofolio.html">Eventos</a></li>
+                    <li><a href="biblioteca.php">Biblioteca</a></li>
+                    <li><a href="https://herme07.github.io/hermemarketing.ao/contato.html">Ajuda</a></li>
+                    <a href="login-portal.html" class="btn-entrar">Portal</a>
+                    <div>
+                     <i class="fa-solid fa-circle-xmark" id="close"  onclick="closemenu()" ></i>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+    <h2>Publicar Novo Evento</h2>
+    <form id="eventoForm">
+        <label for="titulo">Título do Evento:</label>
+        <input type="text" id="titulo" name="titulo" required><br><br>
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao" required></textarea><br><br>
+
+        <label for="link">Link para Mais Informações:</label>
+        <input type="url" id="link" name="link" required><br><br>
+
+        <label for="image">Imagem do Evento:</label>
+        <input type="file" id="image" accept="image/*"><br><br>
+
+        <button type="submit">Publicar Evento</button>
+    </form>
+
+    <hr>
+    <a href="portofolio.html" class="Acessar">Visualizar Eventos Publicados</a>
+    <h2>Eventos Publicados</h2>
+    <section class="eventos-container" id="eventosContainer"></section>
+
+    <script>
+        document.getElementById('eventoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const titulo = document.getElementById('titulo').value;
+            const descricao = document.getElementById('descricao').value;
+            const link = document.getElementById('link').value;
+            const imageInput = document.getElementById('image');
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                const imageData = reader.result;
+                const evento = { titulo, descricao, link, image: imageData };
+
+                let eventos = JSON.parse(localStorage.getItem('eventos')) || [];
+                eventos.push(evento);
+                localStorage.setItem('eventos', JSON.stringify(eventos));
+
+                document.getElementById('eventoForm').reset();
+                alert('Evento publicado com sucesso!');
+            };
+
+            if (imageInput.files.length > 0) {
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                alert("Por favor, adicione uma imagem.");
+            }
+        });
+        function exibirEventos() {
+            const eventosContainer = document.getElementById('eventosContainer');
+            const eventos = JSON.parse(localStorage.getItem('eventos')) || [];
+
+            eventosContainer.innerHTML = ''; // Limpa a lista antes de exibir
+
+            eventos.forEach((evento, index) => {
+                const eventoDiv = document.createElement('div');
+                eventoDiv.classList.add('eventos-item');
+
+                // Monta o HTML do evento
+                eventoDiv.innerHTML = `
+                    <img src="${evento.image}" alt="Imagem do Evento">
+                    <h3>${evento.titulo}</h3>
+                    <p>${evento.descricao}</p>
+                    <a href="${evento.link}" target="_blank" class="button-leia-mais">Leia Mais</a>
+                    <br><br>
+                    <button class="remove-btn" onclick="removerEvento(${index})">Remover</button>
+                `;
+
+                eventosContainer.appendChild(eventoDiv);
+            });
+        }
+
+        // Função para remover um evento
+        function removerEvento(index) {
+            let eventos = JSON.parse(localStorage.getItem('eventos')) || [];
+            eventos.splice(index, 1);
+            localStorage.setItem('eventos', JSON.stringify(eventos));
+            exibirEventos(); // Atualiza a lista após a remoção
+        }
+
+        document.addEventListener('DOMContentLoaded', exibirEventos);
+    </script>
+
+</body>
+</html>
